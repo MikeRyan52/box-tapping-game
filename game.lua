@@ -15,15 +15,16 @@ local scene = composer.newScene()
 -- "scene:create()"
 function scene:create( event )
 
-   function endGame()
+   function endGame(score)
       composer.gotoScene( 'gameover', {
          effect = 'fade',
          time = 300,
-         params = {
-            correctTaps = 7,
-            badTaps = 4,
-            averageResponseTime = 0.23
-         }
+         params = score
+         -- params = {
+         --    correctTaps = 7,
+         --    badTaps = 4,
+         --    averageResponseTime = 0.23
+         -- }
       });
 
       composer.removeScene( 'menu', false )
