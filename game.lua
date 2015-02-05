@@ -83,7 +83,7 @@ local function CreateRedBox()
 	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
 	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
 	redBox = display.newRoundedRect( randX, randY, 100, 100, 10 )	--create the rectangle
-	redBox:setFillColor(1,0,0);			-- set the color to be red
+	redBox:setFillColor(colors.brightBlue.r,colors.brightBlue.g,colors.brightBlue.b);-- set the color to be red
 	redBox:addEventListener("touch", tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = redBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 
@@ -99,7 +99,7 @@ local function CreateBlueBox()
 	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
 	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
 	blueBox = display.newRect( randX, randY, 100, 100 )	--create the rectangle
-	blueBox:setFillColor(0,0,1);			-- set the color to be blue
+	blueBox:setFillColor(colors.red.r,colors.red.g,colors.red.b);			-- set the color to be blue
 	blueBox:addEventListener("touch",tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = blueBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 end
