@@ -92,6 +92,8 @@ function scene:create( event )
    })
    badTaps:setFillColor( 1, 1, 1 )
 
+   print(params.averageResponseTime);
+
    -- Initialize the scene here.
    -- Example: add display objects to "sceneGroup", add touch listeners, etc.
 end

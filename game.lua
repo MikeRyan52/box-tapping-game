@@ -18,11 +18,11 @@ local newTime
 local timeToSpawn
 local boxTimer
 local score = {
-correctTaps = 0,
-badTaps = 0,
-averageResponseTime
+	correctTaps = 0,
+	badTaps = 0,
+	averageResponseTime=0
 }
-local clickTimes{   }
+local clickTimes = {   }
 local i = 0
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
@@ -68,11 +68,18 @@ local function tapSq(event)
 		event.target:removeSelf();
 		timer.cancel( boxTimer )
 		local counter = spawnedBoxes
-		while counter > 0 do
-		  score.averageResponseTime = score.averageResponseTime + clickTimes[counter] 
-		   counter = counter - 1;
+		-- while counter > 0 do
+		--   score.averageResponseTime = score.averageResponseTime + clickTimes[counter] 
+		--    counter = counter - 1;
+		-- end
+		local totalTime = 0;
+		local timeCount = 0;
+		for k,time in pairs(clickTimes) do
+			totalTime = totalTime + time
+			timeCount = timeCount + 1
 		end
-		score.averageResponseTime = averageResponseTime / spawnedBoxes
+		score.averageResponseTime = totalTime / timeCount
+		-- score.averageResponseTime = averageResponseTime / spawnedBoxes
 		endGame(score)
 	end
 end
