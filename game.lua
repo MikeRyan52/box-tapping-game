@@ -22,6 +22,20 @@ local score = { 		--array used to store the values of the number of correct and 
 }
 local clickTimes = {   } 	-- array used to store the values of response times for each click
 local background 		-- create a background for the game
+local scoreUI = {
+	badTaps = {
+		box = false,
+		val = false
+	},
+	correctTaps = {
+		box = false,
+		val = false
+	},
+	averageResponseTime = {
+		box = false,
+		val = false
+	}
+}
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
 -- unless "composer.removeScene()" is called.
@@ -56,7 +70,84 @@ local background
 background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth, display.actualContentHeight ) --create a background during the game
 background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b ) 				--color the background to the desired color
 
+
+local function drawUI()
+	local width = display.actualContentWidth / 3
+	local height = 100
+	local x = 0
+	local y = display.actualContentHeight - 50
+
+	if(scoreUI.badTaps.box) then
+		scoreUI.badTaps.box:removeSelf()
+		scoreUI.badTaps.val:removeSelf()
+		scoreUI.correctTaps.box:removeSelf()
+		scoreUI.correctTaps.val:removeSelf()
+		scoreUI.averageResponseTime.box:removeSelf()
+		scoreUI.averageResponseTime.val:removeSelf()
+	end
+
+	x = width / 2
+	scoreUI.correctTaps.box = display.newRect( sceneGroup, x, y, width, height )
+	scoreUI.correctTaps.box:setFillColor( colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b )
+	scoreUI.correctTaps.val = display.newText({
+		parent = sceneGroup,
+		text = score.correctTaps,
+		x = x,
+		y = y,
+		width = width,
+		align = 'center',
+		font = native.systemFont,
+		fontSize = 50
+	})
+	scoreUI.correctTaps.val:setFillColor( 1, 1, 1 )
+
+	x = width + ( width / 2 )
+	local averageResponseTimeText
+
+	if(score.averageResponseTime == 0) then
+		averageResponseTimeText = '0s'
+	else
+		averageResponseTimeText = ( math.ceil( score.averageResponseTime / 10 ) / 100 ) .. 's'
+	end
+	scoreUI.averageResponseTime.box = display.newRect( sceneGroup, x, y, width, height )
+	scoreUI.averageResponseTime.box:setFillColor( colors.grey.r, colors.grey.g, colors.grey.b )
+	scoreUI.averageResponseTime.val = display.newText({
+		parent = sceneGroup,
+		text = averageResponseTimeText,
+		x = x,
+		y = y,
+		width = width,
+		align = 'center',
+		font = native.systemFont,
+		fontSize = 50
+	})
+	scoreUI.averageResponseTime.val:setFillColor( 0.3, 0.3, 0.3 )
+
+	x = ( width * 2 ) + ( width / 2 )
+	scoreUI.badTaps.box = display.newRect( sceneGroup, x, y, width, height )
+	scoreUI.badTaps.box:setFillColor( colors.red.r, colors.red.g, colors.red.b )
+	scoreUI.badTaps.val = display.newText({
+		parent = sceneGroup,
+		text = score.badTaps,
+		x = x,
+		y = y,
+		width = width,
+		align = 'center',
+		font = native.systemFont,
+		fontSize = 50
+	})
+	scoreUI.badTaps.val:setFillColor( 1, 1, 1 )
+end
+
+
 local function tapSq(event)
+	local totalTime = 0;				-- variable to hold the total amount of time that has passed between each box spawn and the person's reaction time
+	local timeCount = 0;				-- variable to hold the amount of times that they have responded to use to calculate the average response time
+	for k,time in pairs(clickTimes) do		-- loop through our table and calculate the total response time
+		totalTime = totalTime + time		
+		timeCount = timeCount + 1		-- increase the amount of times that they have responded to use to calculate the average response time
+	end
+	score.averageResponseTime = totalTime / timeCount	--calculate the average response time and store it in the table
 
 	--print(event.phase)
 	if event.phase == "ended" and spawnedBoxes ~= 10 then		--check to see if they finished their click and if it has not hit the limited number of boxes
@@ -69,20 +160,16 @@ local function tapSq(event)
 	   i = i+1;							--move to the next index of the array
 	   event.target:removeSelf();				--remove the tapped box
 	   game();						--call the game function to create a new box
-           timer.cancel(boxTimer)				--cancel the timer for the box's self-elimination
+       timer.cancel(boxTimer)				--cancel the timer for the box's self-elimination
+       drawUI()
 	elseif spawnedBoxes == 10 then				--if the number of boxes spawned was the limit
 		event.target:removeSelf();			-- remove the last spawned box
 		timer.cancel( boxTimer )			--cancel the timer for the box's self-elimination 
-		local totalTime = 0;				-- variable to hold the total amount of time that has passed between each box spawn and the person's reaction time
-		local timeCount = 0;				-- variable to hold the amount of times that they have responded to use to calculate the average response time
-		for k,time in pairs(clickTimes) do		-- loop through our table and calculate the total response time
-			totalTime = totalTime + time		
-			timeCount = timeCount + 1		-- increase the amount of times that they have responded to use to calculate the average response time
-		end
-		score.averageResponseTime = totalTime / timeCount	--calculate the average response time and store it in the table
+		
 		endGame(score)					-- pass the score table to the ednGame function
 	end	
 end
+
 ----------------------------------------------------------------------------------------------------------------------------------
 -- function used to create a red Box as chosen by the game() function
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -118,6 +205,7 @@ end
 ------------------------------------------------------------------------------------------------------
 
 function game()
+		drawUI()
 		createBox = math.random( 0, 1 )
 		if spawnedBoxes == 10 then 					--check to see if the number of boxes spanwed is equivalent to the desired amount
 			endGame(score)						--then call the end game function passing the score table
