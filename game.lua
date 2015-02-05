@@ -139,8 +139,7 @@ local function drawUI()
 	scoreUI.badTaps.val:setFillColor( 1, 1, 1 )
 end
 
-
-local function tapSq(event)
+function measureAverageResponseTimes()
 	local totalTime = 0;				-- variable to hold the total amount of time that has passed between each box spawn and the person's reaction time
 	local timeCount = 0;				-- variable to hold the amount of times that they have responded to use to calculate the average response time
 	for k,time in pairs(clickTimes) do		-- loop through our table and calculate the total response time
@@ -148,6 +147,11 @@ local function tapSq(event)
 		timeCount = timeCount + 1		-- increase the amount of times that they have responded to use to calculate the average response time
 	end
 	score.averageResponseTime = totalTime / timeCount	--calculate the average response time and store it in the table
+end
+
+
+local function tapSq(event)
+	
 
 	--print(event.phase)
 	if event.phase == "ended" and spawnedBoxes ~= 10 then		--check to see if they finished their click and if it has not hit the limited number of boxes
@@ -159,12 +163,13 @@ local function tapSq(event)
 	   clickTimes[i] = system.getTimer() - t;			--calculate the amount of time to respond to box spanws
 	   i = i+1;							--move to the next index of the array
 	   event.target:removeSelf();				--remove the tapped box
+	   measureAverageResponseTimes()
 	   game();						--call the game function to create a new box
        timer.cancel(boxTimer)				--cancel the timer for the box's self-elimination
-       drawUI()
 	elseif spawnedBoxes == 10 then				--if the number of boxes spawned was the limit
 		event.target:removeSelf();			-- remove the last spawned box
 		timer.cancel( boxTimer )			--cancel the timer for the box's self-elimination 
+		measureAverageResponseTimes()
 		
 		endGame(score)					-- pass the score table to the ednGame function
 	end	
