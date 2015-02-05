@@ -89,7 +89,7 @@ local function CreateRedBox()
 	spawnedBoxes = spawnedBoxes + 1;
 	randX = math.random( 0, display.contentWidth);
 	randY = math.random( 0, display.contentHeight);
-	redBox = display.newRect( randX, randY, 100, 100 )
+	redBox = display.newRoundedRect( randX, randY, 100, 100, 10 )
 	redBox:setFillColor(1,0,0);
 	redBox:addEventListener("touch", tapSq)
 	boxTimer = timer.performWithDelay( 2000, function() remove = redBox:removeSelf(); game() end)
