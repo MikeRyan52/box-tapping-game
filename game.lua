@@ -56,7 +56,7 @@ local function tapSq(event)
 	if event.phase == "ended" and spawnedBoxes ~= 10 then
 		if event.target == blueBox then
 			score.correctTaps = score.correctTaps + 1
-	    elseif event.taget == redBox then
+	    else
 	    	score.badTaps = score.badTaps + 1
 	    end
 	   clickTimes[i] = system.getTimer() - t;
@@ -111,8 +111,7 @@ function game()
 		createBox = math.random( 0, 1 )
 		if spawnedBoxes == 10 then 
 			endGame(score)
-		end
-		if createBox == 0 then
+		elseif createBox == 0 then
 			timeToSpawn = math.random(500, 5000)
 			timer.performWithDelay( timeToSpawn, CreateBlueBox);
 		else
