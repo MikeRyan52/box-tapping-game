@@ -2,7 +2,28 @@ local colors = require('colors')
 local composer = require('composer')
 local timer = require('timer');
 local scene = composer.newScene()
-
+local spawnedBoxes  = 0;
+local randX;
+local randY;
+local gameStart = false;
+local i = 0;
+local createBox;
+local xx = display.contentWidth / 2;
+local yy = display.contentHeight / 2;
+local blueBox
+local redBox
+local intermediateTime
+local t = 0
+local newTime
+local timeToSpawn
+local boxTimer
+local score = {
+correctTaps = 0,
+badTaps = 0,
+averageResponseTime
+}
+local clickTimes{   }
+local i = 0
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
 -- unless "composer.removeScene()" is called.
@@ -29,18 +50,69 @@ function scene:create( event )
 
       composer.removeScene( 'menu', false )
    end
+local function tapSq(event)
 
-   local sceneGroup = self.view
-   local params = event.params;
+	print(event.phase)
+	if event.phase == "ended" and spawnedBoxes ~= 10 then
+		if event.target == blueBox then
+			score.correctTaps = score.correctTaps + 1
+	    elseif event.taget == redBox then
+	    	score.badTaps = score.badTaps + 1
+	    end
+	   clickTimes[i] = system.getTimer() - t;
+	   i = i+1;
+		event.target:removeSelf();
+		game();
+		timer.cancel(boxTimer)
+	elseif spawnedBoxes == 10 then
+		event.target:removeSelf();
+		timer.cancel( boxTimer )
+		local counter = spawnedBoxes
+		while counter > 0 do
+		  score.averageResponseTime = score.averageResponseTime + clickTimes[counter] 
+		   counter = counter - 1;
+		end
+		score.averageResponseTime = averageResponseTime / spawnedBoxes
+		endGame(score)
+	end
+end
 
-   local x = display.actualContentWidth / 2;
-   local y = display.actualContentHeight / 2;
+local function CreateRedBox()
+	t = system.getTimer();
+	spawnedBoxes = spawnedBoxes + 1;
+	randX = math.random( 0, display.contentWidth);
+	randY = math.random( 0, display.contentHeight);
+	redBox = display.newRect( randX, randY, 100, 100 )
+	redBox:setFillColor(1,0,0);
+	redBox:addEventListener("touch", tapSq)
+	boxTimer = timer.performWithDelay( 2000, function() remove = redBox:removeSelf(); game() end)
 
-   local background = display.newRect( sceneGroup, x, y, display.actualContentWidth, display.actualContentHeight )
+end 
 
-   background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b )
+local function CreateBlueBox()
+	t = system.getTimer();
+	spawnedBoxes = spawnedBoxes + 1;
+	randX = math.random( 0, display.contentWidth);
+	randY = math.random( 0, display.contentHeight);
+	blueBox = display.newRect( randX, randY, 100, 100 )
+	blueBox:setFillColor(0,0,1);
+	blueBox:addEventListener("touch",tapSq)
+	boxTimer = timer.performWithDelay( 2000, function() remove = blueBox:removeSelf(); game() end)
+end
 
-   timer.performWithDelay( 2500, endGame )
+function game()
+		createBox = math.random( 0, 1 )
+		if createBox == 0 then
+			timeToSpawn = math.random(500, 5000)
+			timer.performWithDelay( timeToSpawn, CreateBlueBox);
+		else
+			timeToSpawn = math.random(500, 5000)
+			timer.performWithDelay( timeToSpawn, CreateRedBox);
+		end
+end
+
+game();
+
 end
 
 -- "scene:show()"
