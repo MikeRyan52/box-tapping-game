@@ -155,7 +155,7 @@ local function tapSq(event)
 
 	--print(event.phase)
 	if event.phase == "ended" and spawnedBoxes ~= 10 then		--check to see if they finished their click and if it has not hit the limited number of boxes
-		if event.target == blueBox then				--if the box tapped was blue then increase the number of correct taps
+		if event.target.colorscheme == blueBox.colorscheme then				--if the box tapped was blue then increase the number of correct taps
 			score.correctTaps = score.correctTaps + 1
 	    else							-- if the box tapped was red then increase the number of incorrect taps
 	    	score.badTaps = score.badTaps + 1
@@ -184,7 +184,8 @@ local function CreateRedBox()
 	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
 	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
 	redBox = display.newRoundedRect( randX, randY, 100, 100, 10 )	--create the rectangle
-	redBox:setFillColor(colors.brightBlue.r,colors.brightBlue.g,colors.brightBlue.b);-- set the color to be red
+	redBox:setFillColor(colors.red.r,colors.red.g,colors.red.b);-- set the color to be red
+	redbox.colorscheme = {colors.red.r,colors.red.g,colors.red.b};
 	redBox:addEventListener("touch", tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = redBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 
@@ -200,7 +201,8 @@ local function CreateBlueBox()
 	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
 	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
 	blueBox = display.newRect( randX, randY, 100, 100 )	--create the rectangle
-	blueBox:setFillColor(colors.red.r,colors.red.g,colors.red.b);			-- set the color to be blue
+	blueBox:setFillColor(colors.brightblue.r,colors.brightblue.g,colors.brightblue.b);	-- set the color to be blue
+	bluebox.colorscheme = {colors.brightBlue.r,colors.brightBlue.g,colors.brightBlue.b};
 	blueBox:addEventListener("touch",tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = blueBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 end
