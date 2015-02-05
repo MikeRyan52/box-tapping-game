@@ -205,7 +205,7 @@ local function CreateBlueBox()
 	spawnedBoxes = spawnedBoxes + 1;		--increase the counter for the amount of times a box has been spawned
 	randX = math.random( 50, display.contentWidth - 50);	--randomly generate the x coordinate of the box to be spawned
 	randY = math.random( 25, display.contentHeight - 100);	--randomly genreate the y coordinate of the box to be spawned
-	blueBox = display.newRect( randX, randY, 100, 100 )	--create the rectangle
+	blueBox = display.newRoundedRect( randX, randY, 100, 100, 10 )	--create the rectangle
 	blueBox:setFillColor( colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b );	-- set the color to be blue
 	--bluebox.colorscheme = { colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b }
 	blueBox:addEventListener("touch",tapSq)		--create the event listener to listen for the touch event
