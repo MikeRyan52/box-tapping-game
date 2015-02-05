@@ -21,6 +21,7 @@ local score = { 		--array used to store the values of the number of correct and 
 	averageResponseTime=0
 }
 local clickTimes = {   } 	-- array used to store the values of response times for each click
+local background 		-- create a background for the game
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
 -- unless "composer.removeScene()" is called.
@@ -47,6 +48,11 @@ function scene:create( event )
 
       composer.removeScene( 'menu', false )
    end
+ local sceneGroup = self.view				--tell the scene to refer to itself
+
+background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth, display.actualContentHeight ) --create a background during the game
+background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b ) 				--color the background to the desired color
+
 local function tapSq(event)
 
 	--print(event.phase)
