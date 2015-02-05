@@ -1,8 +1,7 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local colors = require( 'colors' )
-
-local background, correctTapsLabel, badTapsLabel, correctTaps, badTaps, correctTapsBox, badTapsBox
+local background, correctTapsLabel, badTapsLabel, correctTaps, badTaps, correctTapsBox, badTapsBox       --declare variables for the file
 
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
@@ -14,10 +13,10 @@ local background, correctTapsLabel, badTapsLabel, correctTaps, badTaps, correctT
 ---------------------------------------------------------------------------------
 
 -- "scene:create()"
-function scene:create( event )
+function scene:create( event )                                                                     
 
    function newGame()
-      composer.gotoScene( 'game', {
+      composer.gotoScene( 'game', {                                                       --funtion to send the game to the game scene
          effect = 'fade',
          time = 500
       });
@@ -30,14 +29,14 @@ function scene:create( event )
    local y = ( display.actualContentHeight / 2 ) - 150
 
 
-   background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth, display.actualContentHeight )
+   background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth, display.actualContentHeight )         -- set the background to the entire screen
    -- background:setFillColor( 0.15, 0.7, 0.3 )
-   background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b )
+   background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b )                                      -- set the background to the correct colors
 
-   correctTapsBox = display.newRoundedRect( sceneGroup, x - 150, y + 20, 240, 280, 20 )
+   correctTapsBox = display.newRoundedRect( sceneGroup, x - 150, y + 20, 240, 280, 20 )                                    --display correct taps and then color them appropriately
    correctTapsBox:setFillColor( colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b )
 
-   averageResponseTimeLabel = display.newText({
+   averageResponseTimeLabel = display.newText({                                                                         -- display "average response time" on screen
       parent = sceneGroup,
       text = 'AVERAGE RESPONSE TIME',
       x = x,
@@ -47,7 +46,7 @@ function scene:create( event )
       align = 'center'
    })
 
-   averageResponseTime = display.newText({
+   averageResponseTime = display.newText({                                                                                 --display the average response time
       parent = sceneGroup,
       text = ( math.ceil( params.averageResponseTime / 10 ) / 100 ) .. 's',
       x = x,
@@ -57,7 +56,7 @@ function scene:create( event )
       align = 'center'
    })
 
-   correctTapsLabel = display.newText({
+   correctTapsLabel = display.newText({                                                                                    --display the "correct taps"
       parent = sceneGroup,
       text = 'CORRECT TAPS',
       x = x - 150,
@@ -70,7 +69,7 @@ function scene:create( event )
    })
    correctTapsLabel:setFillColor( 1, 1, 1 )
 
-   correctTaps = display.newText({
+   correctTaps = display.newText({                                                                                      -- display the correct number of taps
       parent = sceneGroup,
       text = params.correctTaps,
       x = x - 150,
@@ -86,7 +85,7 @@ function scene:create( event )
    badTapsBox = display.newRoundedRect( sceneGroup, x + 150, y + 20, 240, 280, 20 )
    badTapsBox:setFillColor( colors.red.r, colors.red.g, colors.red.b )
 
-   badTapsLabel = display.newText({
+   badTapsLabel = display.newText({                                                                                        --display BAD TAPS
       parent = sceneGroup,
       text = 'BAD TAPS',
       x = x + 150,
@@ -99,7 +98,7 @@ function scene:create( event )
    })
    badTapsLabel:setFillColor( 1, 1, 1 )
 
-   badTaps = display.newText({
+   badTaps = display.newText({                                                                                             --display the number of bad taps
       parent = sceneGroup,
       text = params.badTaps,
       x = x + 150,
