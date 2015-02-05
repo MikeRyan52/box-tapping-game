@@ -37,6 +37,26 @@ function scene:create( event )
    correctTapsBox = display.newRoundedRect( sceneGroup, x - 150, y + 20, 240, 280, 20 )
    correctTapsBox:setFillColor( colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b )
 
+   averageResponseTimeLabel = display.newText({
+      parent = sceneGroup,
+      text = 'AVERAGE RESPONSE TIME',
+      x = x,
+      y = y + 330,
+      font = native.systemFontBold,
+      fontSize = 22,
+      align = 'center'
+   })
+
+   averageResponseTime = display.newText({
+      parent = sceneGroup,
+      text = ( math.ceil( params.averageResponseTime / 10 ) / 100 ) .. 's',
+      x = x,
+      y = y + 260,
+      font = native.systemFont,
+      fontSize = 100,
+      align = 'center'
+   })
+
    correctTapsLabel = display.newText({
       parent = sceneGroup,
       text = 'CORRECT TAPS',

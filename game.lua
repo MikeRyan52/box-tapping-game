@@ -50,6 +50,9 @@ function scene:create( event )
    end
  local sceneGroup = self.view				--tell the scene to refer to itself
 
+local x = display.actualContentWidth / 2;
+local y = ( display.actualContentHeight / 2 ) - 150
+local background
 background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth, display.actualContentHeight ) --create a background during the game
 background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b ) 				--color the background to the desired color
 
