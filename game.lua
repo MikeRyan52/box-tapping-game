@@ -72,11 +72,11 @@ background = display.newRect( sceneGroup, x, y + 150, display.actualContentWidth
 background:setFillColor( colors.darkBlue.r, colors.darkBlue.g, colors.darkBlue.b ) 				--color the background to the desired color
 
 
-local function drawUI()
-	local width = display.actualContentWidth / 3
-	local height = 100
-	local x = 0
-	local y = display.actualContentHeight - 50
+local function drawUI()						--function to create a UI displaying the correct taps, incorrect taps and repsonse time during the game
+	local width = display.actualContentWidth / 3		--width of the ui to be shown during the game
+	local height = 100					-- height of the UI to be shown during the game
+	local x = 0						
+	local y = display.actualContentHeight - 50		
 
 	if(scoreUI.badTaps.box) then
 		scoreUI.badTaps.box:removeSelf()
