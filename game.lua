@@ -36,6 +36,7 @@ local scoreUI = {
 		val = false
 	}
 }
+print(display.contentWidth, display.contentHeight)
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
 -- unless "composer.removeScene()" is called.
@@ -152,10 +153,10 @@ end
 
 local function tapSq(event)
 	
-
+	marked = event.target
 	--print(event.phase)
 	if event.phase == "ended" and spawnedBoxes ~= 10 then		--check to see if they finished their click and if it has not hit the limited number of boxes
-		if event.target.colorscheme == blueBox.colorscheme then				--if the box tapped was blue then increase the number of correct taps
+		if marked == blueBox then				--if the box tapped was blue then increase the number of correct taps
 			score.correctTaps = score.correctTaps + 1
 	    else							-- if the box tapped was red then increase the number of incorrect taps
 	    	score.badTaps = score.badTaps + 1
@@ -167,6 +168,10 @@ local function tapSq(event)
 	   game();						--call the game function to create a new box
        timer.cancel(boxTimer)				--cancel the timer for the box's self-elimination
 	elseif spawnedBoxes == 10 then				--if the number of boxes spawned was the limit
+			if marked == blueBox then 
+				score.correctTaps = score.correctTaps + 1
+			else
+				score.badTaps = score.badTaps + 1
 		event.target:removeSelf();			-- remove the last spawned box
 		timer.cancel( boxTimer )			--cancel the timer for the box's self-elimination 
 		measureAverageResponseTimes()
@@ -181,11 +186,11 @@ end
 local function CreateRedBox()				
 	t = system.getTimer();				--get the current time
 	spawnedBoxes = spawnedBoxes + 1;		--increase the counter for the amount of times a box has been spawned
-	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
-	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
+	randX = math.random( 50, display.contentWidth - 50);	--randomly generate the x coordinate of the box to be spawned
+	randY = math.random( 25, display.contentHeight - 100);	--randomly genreate the y coordinate of the box to be spawned
 	redBox = display.newRoundedRect( randX, randY, 100, 100, 10 )	--create the rectangle
-	redBox:setFillColor(colors.red.r,colors.red.g,colors.red.b);-- set the color to be red
-	redbox.colorscheme = {colors.red.r,colors.red.g,colors.red.b};
+	redBox:setFillColor( colors.red.r, colors.red.g, colors.red.b );-- set the color to be red
+	--redbox.colorscheme = { colors.red.r, colors.red.g, colors.red.b }
 	redBox:addEventListener("touch", tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = redBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 
@@ -198,11 +203,11 @@ end
 local function CreateBlueBox()
 	t = system.getTimer();				--get the current time
 	spawnedBoxes = spawnedBoxes + 1;		--increase the counter for the amount of times a box has been spawned
-	randX = math.random( 0, display.contentWidth);	--randomly generate the x coordinate of the box to be spawned
-	randY = math.random( 0, display.contentHeight);	--randomly genreate the y coordinate of the box to be spawned
+	randX = math.random( 50, display.contentWidth - 50);	--randomly generate the x coordinate of the box to be spawned
+	randY = math.random( 25, display.contentHeight - 100);	--randomly genreate the y coordinate of the box to be spawned
 	blueBox = display.newRect( randX, randY, 100, 100 )	--create the rectangle
-	blueBox:setFillColor(colors.brightblue.r,colors.brightblue.g,colors.brightblue.b);	-- set the color to be blue
-	bluebox.colorscheme = {colors.brightBlue.r,colors.brightBlue.g,colors.brightBlue.b};
+	blueBox:setFillColor( colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b );	-- set the color to be blue
+	--bluebox.colorscheme = { colors.brightBlue.r, colors.brightBlue.g, colors.brightBlue.b }
 	blueBox:addEventListener("touch",tapSq)		--create the event listener to listen for the touch event
 	boxTimer = timer.performWithDelay( 2000, function() remove = blueBox:removeSelf(); game() end)	--create a timed delay that will eliminate a box and then recall the box call
 end
